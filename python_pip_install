@@ -1,0 +1,38 @@
+
+python 2.7
+
+# wget "https://pypi.python.org/packages/source/p/pip/pip-1.5.4.tar.gz#md5=834b2904f92d46aaa333267fb1c922bb" --no-check-certificate
+
+install pip_install 前提
+
+yum install zlib zlib-devel openssl openssl-devel -y
+
+重新make install python2.7.8
+
+
+pip安装	
+# tar -xzvf pip-1.5.4.tar.gz
+# cd pip-1.5.4
+# python setup.py install
+
+1.RuntimeError: Compression requires the (missing) zlib module
+
+安装zlib zlib-devel
+
+2.ImportError: cannot import name HTTPSHandler
+
+安装 openssl openssl-devel
+
+3.python错误：ImportError: No module named setuptools
+
+这句错误提示的表面意思是：没有setuptools的模块，说明python缺少这个模块，那我们只要安装这个模块即可解决此问题，下面我们来安装一下：
+在命令行下：
+下载setuptools包
+shell# wget http://pypi.python.org/packages/source/s/setuptools/setuptools-0.6c11.tar.gz
+解压setuptools包
+shell# tar zxvf setuptools-0.6c11.tar.gz
+shell# cd setuptools-0.6c11
+编译setuptools
+shell# python setup.py build
+开始执行setuptools安装
+shell# python setup.py install

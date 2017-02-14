@@ -1,0 +1,160 @@
+
+1.前提
+yum install gcc libffi-devel python-devel openssl-devel
+
+2.下载easy_install
+
+wget -q http://peak.telecommunity.com/dist/ez_setup.py
+python ez_setup.py
+
+easy_install fabric
+
+
+
+error: Setup script exited with error: command 'gcc' failed with exit status 1
+
+
+
+1.
+from fabric.api import local
+
+def lsfab():
+    local('cd /tmp/')
+    local('pwd')
+
+
+2.
+from fabric.api import run,local
+
+def host_type():
+    local('uname -s')
+
+def hello(name="world"):
+    print("Hello %s!" % name)
+
+def ls():
+    run('uname -a')
+
+def composite(name="world"):
+    hello(name)
+    host_type()
+
+3.
+from fabric.api import env,run
+
+env.hosts = ['root@10.251.35.215:22']
+env.password = 'tXpZ9btcqkClp3oaWyfWDM4b'
+
+def mytask():
+    run('ls /tmp')
+
+4.扩展，打印颜色
+
+from fabric.colors import *
+
+def show():
+    print green('success')
+    print red('fail')
+    print yellow('yellow')
+
+5.远程操作，增加文件，打包
+
+from fabric.api import env, run, cd
+
+def set_hosts():
+    env.hosts = ['M00001', 'M00002']
+
+def ssh():
+    run('ls /var/log')
+
+def filepath():
+    remote_dir = '/usr/local/src'
+    with cd(remote_dir):
+        run("echo 1 >> README")
+        run("cat README")
+def addfile():
+    remote_dir = '/usr/local/src'
+    with cd(remote_dir):
+        run("tar cvf 1.tar README")
+        run("ls .")
+
+6.远程测试
+
+from fabric.api import cd,run,env,hosts
+ 
+env.hosts=['192.168.85.99:22','192.168.85.101:22']
+  
+def test():
+    with cd('/home'):
+        run("du -sh")
+
+
+7.服务器混搭
+
+from fabric.api import env,roles,run,execute
+
+env.roledefs = {'server1': ['M00001',], 'server2': ['M00002',]}
+
+@roles('server1')
+
+def task1():
+    run('ls /home/ -l | wc -l')
+
+@roles('server2')
+
+def task2():
+    run('du -sh /home')
+
+def test():
+    execute(task1)
+    execute(task2)
+
+
+
+8.
+
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from datetime import datetime
+from fabric.api import *
+
+# 登录用户和主机名：
+env.user = 'root'
+env.hosts = ['M00001'] # 如果有多个主机，fabric会自动依次部署
+
+def pack():
+    ' 定义一个pack任务 '
+    # 打一个tar包：
+    tar_files = ['*.py', 'static/*', 'templates/*', 'favicon.ico']
+    local('rm -f example.tar.gz')
+    local('tar -czvf example.tar.gz --exclude=\'*.tar.gz\' --exclude=\'fabfile.py\' %s' % ' '.join(tar_files))
+
+def deploy():
+    ' 定义一个部署任务 '
+    # 远程服务器的临时文件：
+    remote_tmp_tar = '/tmp/example.tar.gz'
+    tag = datetime.now().strftime('%y.%m.%d_%H.%M.%S')
+    run('rm -f %s' % remote_tmp_tar)
+    # 上传tar文件至远程服务器：
+    put('shici.tar.gz', remote_tmp_tar)
+    # 解压：
+    remote_dist_dir = '/srv/www.example.com@%s' % tag
+    remote_dist_link = '/srv/www.example.com'
+    run('mkdir %s' % remote_dist_dir)
+    with cd(remote_dist_dir):
+        run('tar -xzvf %s' % remote_tmp_tar)
+    # 设定新目录的www-data权限:
+    run('chown -R www-data:www-data %s' % remote_dist_dir)
+    # 删除旧的软链接：
+    run('rm -f %s' % remote_dist_link)
+    # 创建新的软链接指向新部署的目录：
+    run('ln -s %s %s' % (remote_dist_dir, remote_dist_link))
+    run('chown -R www-data:www-data %s' % remote_dist_link)
+    # 重启fastcgi：
+    fcgi = '/etc/init.d/py-fastcgi'
+    with settings(warn_only=True):
+        run('%s stop' % fcgi)
+    run('%s start' % fcgi)
+
+

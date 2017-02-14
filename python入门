@@ -1,0 +1,151 @@
+实例1
+当 a>=100,输出a，否者输出-a
+
+
+#/usr/bin/evn python
+#-*-coding:utf-8-*-      						   
+a = int(raw_input("please input a number:"))     
+if a>=100:
+    print a
+else:
+    print -a
+
+
+
+#!/usr/bin/env python
+#-*-coding:utf-8-*-
+a = raw_input('请输入:')
+a = int(a) 
+if a >= 100: 
+    print a 
+else:
+    print -a 
+
+
+#!/usr/bin/env python
+#-*-coding:utf-8-*-
+age = raw_input('芊芊多大了')
+age = int(age)
+if age >=18:
+	print '芊芊长大了'
+else:
+	print '芊芊需要照顾呢'
+
+
+
+把u'xxx'转换为UTF-8编码的'xxx'用encode('utf-8')方法：
+
+>>> u'ABC'.encode('utf-8')
+'ABC'
+>>> u'中文'.encode('utf-8')
+'\xe4\xb8\xad\xe6\x96\x87'
+
+
+把UTF-8编码表示的字符串'xxx'转换为Unicode字符串u'xxx'用decode('utf-8')方法：
+
+>>> 'abc'.decode('utf-8')
+u'abc'
+>>> '\xe4\xb8\xad\xe6\x96\x87'.decode('utf-8')
+u'\u4e2d\u6587'
+>>> print '\xe4\xb8\xad\xe6\x96\x87'.decode('utf-8')
+中文
+
+字符串取长
+len(u'ABC')
+
+
+常见的占位符有：
+%d	整数
+%f	浮点数
+%s	字符串
+%x	十六进制整数
+如果你不太确定应该用什么，%s永远起作用，它会把任何数据类型转换为字符串：
+
+有些时候，字符串里面的%是一个普通字符怎么办？这个时候就需要转义，用%%来表示一个%：
+
+
+
+类：数据和方法
+	数据：变量
+	方法：函数
+
+类：实例化成对象
+	CA：
+		IA：
+		IB：
+
+
+核心数据类型：
+	数字：int,long,float,complex,bool
+	字符：str,unicode
+	列表：list
+	字典：dict
+	元祖：tuple
+	文件：file
+	其他类型：集合（set），frozenset,类类型，none
+
+ 	其他文件类工具：pipes,fifos,sockets
+
+
+
+类型转换：
+	str(),repr(）或format（）：将非字符类型转换为字符
+
+	int():转化为整数
+
+	float():
+
+	list(): 字符串转化为列表
+		str1 = "hello world"
+		l1 = list(str1)	
+		print l1
+
+	tuple():将字符串转为元祖
+
+	set()：将字串转换为集合
+
+	dict()：创建字典:其中d必须是（key，value）的元祖序列
+
+		l3 = [('a',1),('b',11),('c',45)]
+
+
+	chr():将整数转化为字符
+
+	ord()：将字符转换为整数值
+
+	hex()
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
